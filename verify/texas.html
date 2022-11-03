@@ -63,13 +63,11 @@
         background-color: rgba(195, 111, 24, 0.2);
     }
     .is-over-median {
-        color: #44B39D;
+      /*size: 100px;*/
+        /*color: #44B39D;*/
     }
-    .is-at-median {
-        color: #3B3C3D;
-    }
-    .is-under-median {
-        color: #BF4A67;
+    .poker {
+      float: left;
     }
   </style>
 </head>
@@ -90,13 +88,6 @@
         </p>
       </div>
       <div class="field">
-        <label class="label">Salt</label>
-        <p class="control has-icons-left">
-          <input class="input" type="text" id="game_salt_input" placeholder="Salt" value="000000000000000000030587dd9ded1fcc5d603652da58deb670319bd2e09445">
-          <span class="icon is-small is-left"><i class="fa fa-filter"></i></span>
-        </p>
-      </div>
-      <div class="field">
         <label class="label">Amount of games</label>
         <p class="control has-icons-left">
           <input class="input" type="number" id="game_amount_input" min="1" max="100000" step="1" placeholder="Amount of games" value="10">
@@ -110,12 +101,13 @@
       </div>
     </div>
     <hr>
+    <!-- // 间距4  -->
     <div class="container">
       <table class="table is-striped is-fullwidth is-hoverable is-narrow" style="display:table">
         <thead>
           <tr>
             <th><b>Game's hash</b></th>
-            <th><b>Bust</b></th>
+            <th><b>View</b></th>
           </tr>
         </thead>
         <tbody id="game_verify_table"></tbody>
@@ -134,37 +126,34 @@
         let prevHash = null;
         for (let i = 0; i < $('#game_amount_input').val(); i++) {
           let hash = String(prevHash ? CryptoJS.SHA256(String(prevHash)) : $('#game_hash_input').val());
-          let bust = gameResult(hash, $('#game_salt_input').val());
           setTimeout(function() {
-            addTableRow(hash, bust, i)
+            addTableRow(hash, i)
           }, i * 1);
           prevHash = hash;
         }
       });
       $('#game_amount_input').on('keyup', () => {
-        if ($('#game_amount_input').val() >= 10000) {
-          if ($('#game_verify_warning').length) return;
-          $('#game_verify_submit').parent().append(
-            $('<span/>').attr({
-              'id': 'game_verify_warning',
-              'class': 'tag is-warning'
-            }).text("Verifying a huge amount of games may consume more ressources from your CPU")
-          );
-        } else {
-          if ($('#game_verify_warning').length) {
-            $('#game_verify_warning').remove();
-          }
-        }
+        // if ($('#game_amount_input').val() >= 10000) {
+        //   if ($('#game_verify_warning').length) return;
+        //   $('#game_verify_submit').parent().append(
+        //     $('<span/>').attr({
+        //       'id': 'game_verify_warning',
+        //       'class': 'tag is-warning'
+        //     }).text("Verifying a huge amount of games may consume more ressources from your CPU")
+        //   );
+        // } else {
+        //   if ($('#game_verify_warning').length) {
+        //     $('#game_verify_warning').remove();
+        //   }
+        // }
       });
-      const addTableRow = (hash, bust, index) => {
+      const addTableRow = (hash, index) => {
         $('<tr/>').attr({
           'class': index === 0 ? 'is-first' : null
         }).append(
           $('<td/>').text(hash)
         ).append(
-          $('<td/>').text(bust).attr({
-            'class': bust === 1.98 ? 'is-at-median' : bust > 1.98 ? 'is-over-median' : 'is-under-median'
-          })
+          $('<td/>').text('展开').attr({'class': 'is-over-median','id':'open','hash':hash})
         ).appendToWithIndex($('#game_verify_table'), index);
         if (index >= $('#game_amount_input').val() - 1) {
           $('#game_hash_input').parent().removeClass('is-loading');
@@ -173,29 +162,86 @@
           isVerifying = false;
         }
       };
-      const gameResult = (seed, salt) => {
-        const nBits = 52; // number of most significant bits to use
-
-        // 1. HMAC_SHA256(message=seed, key=salt)  
-        if (salt) {
-          const hmac = CryptoJS.HmacSHA256(CryptoJS.enc.Hex.parse(seed), salt);
-          seed = hmac.toString(CryptoJS.enc.Hex);
+      const pokerWidth = 30
+      const pokerHeight = 36
+      $("#game_verify_table").on("click","#open",function(){
+        $(".pokerList").remove();
+        hash = $(this).attr('hash');
+        dms = gameResult(hash)
+        html = "<div class='pokerList'>";
+          for (let index = 0; index < dms.length; index++) {
+            oldDecor = 0;
+            switch (dms[index].Suit) {
+              case 0:
+                oldDecor = 1
+                break;
+              case 1:
+                oldDecor = 0
+                break;
+              case 2:
+                oldDecor = 3
+                break
+              case 3:
+                oldDecor = 2
+                break;
+            }
+            decor = -(oldDecor*40) - 4
+            if (dms[index].Value == 12) {
+              word = -4
+            } else {
+              word = -dms[index].Value*pokerWidth - ((dms[index].Value+1) * 4) - 34
+            }
+            html += '<div class="poker" style="width: 30px;height: 36px;background-image: url(./52-cards.png);background-repeat: no-repeat;background-position: '+word+'px '+decor+'px;"></div>'
+          }
+        html += "</div>"
+        $($(this).parent()).after(html)
+        // console.log($(this).attr('hash'));
+      })
+      const  SUITSIZE = 4
+      const  CARDRANK = 13
+      const dm = []
+      for (i = 0; i < SUITSIZE; i++) {
+        for (j = 0; j < CARDRANK; j++) {
+          dm[i*CARDRANK+j] = {Suit:0,Value:0}
+          dm[i*CARDRANK+j].Suit = i
+          dm[i*CARDRANK+j].Value = j
         }
+      }
+      const gameResult = (seed) => {
+        dms = JSON.parse(JSON.stringify(dm));
+        hash = seed
+        var k1 = 0
+        var k2 = 0
+        var k3 = 0
+        var k4 = 0
+        for (i = 0; i < hash.length; i++) {
+          k1 = (k1 + hash[i].charCodeAt()) % 99 % 52
+          k2 = (k2 + hash[i].charCodeAt()) % 75 % 52
+          k3 = (k3 + hash[i].charCodeAt()) % 36 % 52
+          k4 = (k4 + hash[i].charCodeAt()) % 18 % 52
+          // console.log(k1,k2,k3,k4)
 
-        // 2. r = 52 most significant bits
-        seed = seed.slice(0, nBits / 4);
-        const r = parseInt(seed, 16);
+          v1 = dms[k3]
+          v2 = dms[k2]
+          dms[k2] = v1
+          dms[k3] =v2
 
-        // 3. X = r / 2^52
-        let X = r / Math.pow(2, nBits); // uniformly distributed in [0; 1)
-        X = parseFloat(X.toPrecision(9));
+          v3 = dms[k4]
+          v4 = dms[k1]
+          dms[k1] = v3
+          dms[k4] = v4
 
-        // 4. X = 99 / (1-X)
-        X = 99 / (1 - X);
-
-        // 5. return max(trunc(X), 100)
-        const result = Math.floor(X);
-        return Math.max(1, result / 100);
+          v5 = dms[k2]
+          v6 = dms[k1]
+          dms[k1] = v5
+          dms[k2] = v6
+          
+          v7 = dms[k3]
+          v8 = dms[k2]
+          dms[k2] = v7
+          dms[k3] = v8
+        }
+        return dms
       };
       $.fn.appendToWithIndex = function(to, index) {
         if (!to instanceof jQuery) {
@@ -210,11 +256,6 @@
       var hash_url = window.location.search
       const query = new URLSearchParams(location.search);
       const version = query.get('v');
-      if (version === 'v1') {
-        $('#game_salt_input').val('');
-      } else if (version === 'v2') {
-        $('#game_salt_input').val('0000000000000000000e3a66df611d6935b30632f352e4934c21059696117f28');
-      }
       if ((/hash=/).test(hash_url)) {
         var hash = hash_url.match(/hash=[0-9a-zA-z]+/)[0].replace(/hash=/, '');
         $('#game_hash_input').val(hash)
