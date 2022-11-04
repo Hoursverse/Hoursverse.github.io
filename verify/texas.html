@@ -188,6 +188,7 @@
       border-radius: 8px;
       width: 1344px;
       background: #22222A;
+      margin-bottom: 20px;
     }
 
     /* 默认箭头 */
@@ -286,10 +287,10 @@
       $('<tr/>').attr({
         'class': index === 0 ? 'is-first' : null
       }).append(
-        $('<td/>').text(hash)
+        $('<td/>').text(hash).attr({ 'class': 'is-over-median', 'id': 'open', 'hash': hash })
       ).append(
         $('<td/>').text('').attr({ 'class': 'is-over-median', 'id': 'open', 'hash': hash }).append(
-          $('<span/>').text("").attr({ 'class': "openPoker" })
+          $('<span/>').text("").attr({ 'class': "openPoker checkHash" })
         )
       ).appendToWithIndex($('#game_verify_table'), index);
       if (index >= $('#game_amount_input').val() - 1) {
@@ -302,9 +303,17 @@
     const pokerWidth = 30
     const pokerHeight = 36
     $("#game_verify_table").on("click", "#open", function () {
-      $(".is-over-median span").attr({ class: "openPoker" })
-      $($(this).children()).attr({ class: "closePoker" })
+      // console.log($(this).parent().children("span").val())
+      isOpen = $($(this).parent().children("td:last-child").children()).attr("isOpen")
+      $(".checkHash").attr({ class: "openPoker checkHash" })
       $(".pokerList").remove();
+      if (isOpen == "true") {
+        $(".checkHash").attr({ class: "openPoker checkHash" ,isOpen:false})
+        return
+      }
+      // $($(this).children()).attr({ class: "closePoker checkHash" })
+      $(".pokerList").remove();
+      $($(this).parent().children("td:last-child").children()).attr({ class: "closePoker checkHash" ,isOpen:true})
       hash = $(this).attr('hash');
       dms = gameResult(hash)
       html = "<div class='pokerList'>";
