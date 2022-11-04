@@ -1,0 +1,36 @@
+html,
+body {
+  background-color: #30313c;
+}
+
+.title:not(.is-spaced)+.subtitle {
+  margin-top: -1rem;
+}
+
+/* 间距 */
+.mt50 {
+  margin-top: 50px;
+}
+
+/* 字号 */
+.fn36 {
+  font-size: 36px;
+}
+
+.fn24 {
+  font-size: 24px;
+}
+
+.fn22 {
+  font-size: 22px;
+}
+
+
+/* 字体颜色 */
+.cff {
+  color: #fff;
+}
+
+.c95 {
+  color: #959595;
+}

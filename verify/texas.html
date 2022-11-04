@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Crash - Game Verification Script</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -9,65 +9,202 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
-  
+  <link rel="stylesheet" type="text/css" href="./css/texas.css">
+
   <style>
-    *, body, button, input, textarea, select {
+    *,
+    body,
+    button,
+    input,
+    textarea,
+    select {
       text-rendering: optimizeLegibility;
       -moz-osx-font-smoothing: grayscale;
     }
-    body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {
-      margin:0;
-      padding:0;
+
+    body,
+    div,
+    dl,
+    dt,
+    dd,
+    ul,
+    ol,
+    li,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    pre,
+    form,
+    fieldset,
+    input,
+    textarea,
+    p,
+    blockquote,
+    th,
+    td {
+      margin: 0;
+      padding: 0;
     }
+
     table {
-      border-collapse:collapse;
-      border-spacing:0;
+      border-collapse: collapse;
+      border-spacing: 0;
     }
-    fieldset,img {
-      border:0;
+
+    fieldset,
+    img {
+      border: 0;
     }
-    address,caption,cite,code,dfn,em,strong,th,var {
-      font-style:normal;
-      font-weight:normal;
+
+    address,
+    caption,
+    cite,
+    code,
+    dfn,
+    em,
+    strong,
+    th,
+    var {
+      font-style: normal;
+      font-weight: normal;
     }
-    ol,ul {
-      list-style:none;
+
+    ol,
+    ul {
+      list-style: none;
     }
-    caption,th {
-      text-align:left;
+
+    caption,
+    th {
+      text-align: left;
     }
-    h1,h2,h3,h4,h5,h6 {
-      font-size:100%;
-      font-weight:normal;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: 100%;
+      font-weight: normal;
     }
-    q:before,q:after {
-      content:'';
+
+    q:before,
+    q:after {
+      content: '';
     }
-    abbr,acronym { border:0;}
+
+    abbr,
+    acronym {
+      border: 0;
+    }
   </style>
   <style type="text/css">
     table {
-        table-layout: fixed;
+      table-layout: fixed;
     }
+
     table thead tr th:first-child {
-        width: 80%;
+      width: 80%;
     }
+
     table tbody tr td {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
+    /* 去除默认高亮选择 */
     .is-first {
-        background-color: rgba(195, 111, 24, 0.2);
+      /* 
+      border-radius: 8px; */
     }
-    .is-over-median {
-      /*size: 100px;*/
-        /*color: #44B39D;*/
-    }
+
     .poker {
       float: left;
+    }
+
+    input {
+      background: #22222A !important;
+      border-radius: 8px !important;
+      border: 1px solid #22222A !important;
+      color: #fff !important;
+    }
+
+    .control.has-icons-left .icon {
+      color: #959595 !important;
+    }
+
+    #game_verify_submit {
+      background: #0A67CF !important;
+      border-radius: 24px !important;
+      margin: 20px 0px 50px;
+      box-sizing: border-box;
+      padding: 10px 50px;
+    }
+
+    table {
+      background-color: #30313c !important;
+      color: #fff !important;
+    }
+
+    .table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+      background-color: transparent !important;
+    }
+
+    .table td,
+    .table th {
+      border: none;
+    }
+
+    .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
+      background: #454650;
+    }
+
+    table tbody tr td {
+      font-size: 18px;
+      line-height: 40px;
+    }
+
+    table tbody tr td:first-child {
+      border-radius: 8px 0px 0px 8px;
+    }
+
+    table tbody tr td:last-child {
+      border-radius: 0px 8px 8px 0px;
+      text-align: right;
+    }
+
+    .pokerList {
+      height: 90px;
+      box-sizing: border-box;
+      padding: 10px;
+      border-radius: 8px;
+      width: 1344px;
+      background: #22222A;
+    }
+
+    /* 默认箭头 */
+    .openPoker,
+    .closePoker {
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      background: url(./image/initRight.png) no-repeat center;
+      background-size: 20px 24px;
+    }
+
+    /* 向下箭头 */
+    .closePoker {
+      background: url(./image/initDown.png) no-repeat center;
+      background-size: 20px 24px;
+
     }
   </style>
 </head>
@@ -75,22 +212,22 @@
 <body>
   <section class="section">
     <div class="container">
-      <h1 class="title">Texas Hold'em - Game Verification Script</h1>
-      <h2 class="subtitle">Third party script used to verify games on Texas Hold'em.</h2>
+      <h1 class="title cff fn36 ">Texas Hold'em - Game Verification Script</h1>
+      <h2 class="subtitle c95 fn24">Third party script used to verify games on Texas Hold'em.</h2>
     </div>
-    <hr>
-    <div class="container">
+    <div class="container mt50">
       <div class="field">
-        <label class="label">Game's hash</label>
+        <label class="label fn22 cff">Game's hash</label>
         <p class="control has-icons-left">
           <input class="input" type="text" id="game_hash_input" placeholder="Game's hash (SHA256)">
           <span class="icon is-small is-left"><i class="fa fa-key"></i></span>
         </p>
       </div>
       <div class="field">
-        <label class="label">Amount of games</label>
+        <label class="label cff">Amount of games</label>
         <p class="control has-icons-left">
-          <input class="input" type="number" id="game_amount_input" min="1" max="100000" step="1" placeholder="Amount of games" value="10">
+          <input class="input" type="number" id="game_amount_input" min="1" max="100000" step="1"
+            placeholder="Amount of games" value="10">
           <span class="icon is-small is-left"><i class="fa fa-hashtag"></i></span>
         </p>
       </div>
@@ -100,177 +237,179 @@
         </p>
       </div>
     </div>
-    <hr>
-    <!-- // 间距4  -->
     <div class="container">
       <table class="table is-striped is-fullwidth is-hoverable is-narrow" style="display:table">
         <thead>
           <tr>
-            <th><b>Game's hash</b></th>
-            <th><b>View</b></th>
+            <th><b class="fn22 cff">Game's hash</b></th>
+            <th style="text-align:right ;"><b class="fn22 cff">View</b></th>
           </tr>
         </thead>
         <tbody id="game_verify_table"></tbody>
       </table>
     </div>
   </section>
-    <script type="text/javascript">
-      var isVerifying = false;
-      $('#game_verify_submit').on('click', () => {
-        if (isVerifying) return;
-        isVerifying = true;
-        $('#game_hash_input').parent().addClass('is-loading');
-        $('#game_verify_submit').addClass('is-loading');
-        $('#game_hash_input, #game_amount_input, #game_verify_submit').attr('disabled', 'disabled');
-        $('#game_verify_table').html('');
-        let prevHash = null;
-        for (let i = 0; i < $('#game_amount_input').val(); i++) {
-          let hash = String(prevHash ? CryptoJS.SHA256(String(prevHash)) : $('#game_hash_input').val());
-          setTimeout(function() {
-            addTableRow(hash, i)
-          }, i * 1);
-          prevHash = hash;
-        }
-      });
-      $('#game_amount_input').on('keyup', () => {
-        // if ($('#game_amount_input').val() >= 10000) {
-        //   if ($('#game_verify_warning').length) return;
-        //   $('#game_verify_submit').parent().append(
-        //     $('<span/>').attr({
-        //       'id': 'game_verify_warning',
-        //       'class': 'tag is-warning'
-        //     }).text("Verifying a huge amount of games may consume more ressources from your CPU")
-        //   );
-        // } else {
-        //   if ($('#game_verify_warning').length) {
-        //     $('#game_verify_warning').remove();
-        //   }
-        // }
-      });
-      const addTableRow = (hash, index) => {
-        $('<tr/>').attr({
-          'class': index === 0 ? 'is-first' : null
-        }).append(
-          $('<td/>').text(hash)
-        ).append(
-          $('<td/>').text('展开').attr({'class': 'is-over-median','id':'open','hash':hash})
-        ).appendToWithIndex($('#game_verify_table'), index);
-        if (index >= $('#game_amount_input').val() - 1) {
-          $('#game_hash_input').parent().removeClass('is-loading');
-          $('#game_verify_submit').removeClass('is-loading');
-          $('#game_hash_input, #game_amount_input, #game_verify_submit').removeAttr("disabled");
-          isVerifying = false;
-        }
-      };
-      const pokerWidth = 30
-      const pokerHeight = 36
-      $("#game_verify_table").on("click","#open",function(){
-        $(".pokerList").remove();
-        hash = $(this).attr('hash');
-        dms = gameResult(hash)
-        html = "<div class='pokerList'>";
-          for (let index = 0; index < dms.length; index++) {
-            oldDecor = 0;
-            switch (dms[index].Suit) {
-              case 0:
-                oldDecor = 1
-                break;
-              case 1:
-                oldDecor = 0
-                break;
-              case 2:
-                oldDecor = 3
-                break
-              case 3:
-                oldDecor = 2
-                break;
-            }
-            decor = -(oldDecor*40) - 4
-            if (dms[index].Value == 12) {
-              word = -4
-            } else {
-              word = -dms[index].Value*pokerWidth - ((dms[index].Value+1) * 4) - 34
-            }
-            html += '<div class="poker" style="width: 30px;height: 36px;background-image: url(./52-cards.png);background-repeat: no-repeat;background-position: '+word+'px '+decor+'px;"></div>'
-          }
-        html += "</div>"
-        $($(this).parent()).after(html)
-        // console.log($(this).attr('hash'));
-      })
-      const  SUITSIZE = 4
-      const  CARDRANK = 13
-      const dm = []
-      for (i = 0; i < SUITSIZE; i++) {
-        for (j = 0; j < CARDRANK; j++) {
-          dm[i*CARDRANK+j] = {Suit:0,Value:0}
-          dm[i*CARDRANK+j].Suit = i
-          dm[i*CARDRANK+j].Value = j
-        }
+  <script type="text/javascript">
+    var isVerifying = false;
+    $('#game_verify_submit').on('click', () => {
+      if (isVerifying) return;
+      isVerifying = true;
+      $('#game_hash_input').parent().addClass('is-loading');
+      $('#game_verify_submit').addClass('is-loading');
+      $('#game_hash_input, #game_amount_input, #game_verify_submit').attr('disabled', 'disabled');
+      $('#game_verify_table').html('');
+      let prevHash = null;
+      for (let i = 0; i < $('#game_amount_input').val(); i++) {
+        let hash = String(prevHash ? CryptoJS.SHA256(String(prevHash)) : $('#game_hash_input').val());
+        setTimeout(function () {
+          addTableRow(hash, i)
+        }, i * 1);
+        prevHash = hash;
       }
-      const gameResult = (seed) => {
-        dms = JSON.parse(JSON.stringify(dm));
-        hash = seed
-        var k1 = 0
-        var k2 = 0
-        var k3 = 0
-        var k4 = 0
-        for (i = 0; i < hash.length; i++) {
-          k1 = (k1 + hash[i].charCodeAt()) % 99 % 52
-          k2 = (k2 + hash[i].charCodeAt()) % 75 % 52
-          k3 = (k3 + hash[i].charCodeAt()) % 36 % 52
-          k4 = (k4 + hash[i].charCodeAt()) % 18 % 52
-          // console.log(k1,k2,k3,k4)
-
-          v1 = dms[k3]
-          v2 = dms[k2]
-          dms[k2] = v1
-          dms[k3] =v2
-
-          v3 = dms[k4]
-          v4 = dms[k1]
-          dms[k1] = v3
-          dms[k4] = v4
-
-          v5 = dms[k2]
-          v6 = dms[k1]
-          dms[k1] = v5
-          dms[k2] = v6
-          
-          v7 = dms[k3]
-          v8 = dms[k2]
-          dms[k2] = v7
-          dms[k3] = v8
+    });
+    $('#game_amount_input').on('keyup', () => {
+      // if ($('#game_amount_input').val() >= 10000) {
+      //   if ($('#game_verify_warning').length) return;
+      //   $('#game_verify_submit').parent().append(
+      //     $('<span/>').attr({
+      //       'id': 'game_verify_warning',
+      //       'class': 'tag is-warning'
+      //     }).text("Verifying a huge amount of games may consume more ressources from your CPU")
+      //   );
+      // } else {
+      //   if ($('#game_verify_warning').length) {
+      //     $('#game_verify_warning').remove();
+      //   }
+      // }
+    });
+    const addTableRow = (hash, index) => {
+      $('<tr/>').attr({
+        'class': index === 0 ? 'is-first' : null
+      }).append(
+        $('<td/>').text(hash)
+      ).append(
+        $('<td/>').text('').attr({ 'class': 'is-over-median', 'id': 'open', 'hash': hash }).append(
+          $('<span/>').text("").attr({ 'class': "openPoker" })
+        )
+      ).appendToWithIndex($('#game_verify_table'), index);
+      if (index >= $('#game_amount_input').val() - 1) {
+        $('#game_hash_input').parent().removeClass('is-loading');
+        $('#game_verify_submit').removeClass('is-loading');
+        $('#game_hash_input, #game_amount_input, #game_verify_submit').removeAttr("disabled");
+        isVerifying = false;
+      }
+    };
+    const pokerWidth = 30
+    const pokerHeight = 36
+    $("#game_verify_table").on("click", "#open", function () {
+      $(".is-over-median span").attr({ class: "openPoker" })
+      $($(this).children()).attr({ class: "closePoker" })
+      $(".pokerList").remove();
+      hash = $(this).attr('hash');
+      dms = gameResult(hash)
+      html = "<div class='pokerList'>";
+      for (let index = 0; index < dms.length; index++) {
+        oldDecor = 0;
+        switch (dms[index].Suit) {
+          case 0:
+            oldDecor = 1
+            break;
+          case 1:
+            oldDecor = 0
+            break;
+          case 2:
+            oldDecor = 3
+            break
+          case 3:
+            oldDecor = 2
+            break;
         }
-        return dms
-      };
-      $.fn.appendToWithIndex = function(to, index) {
-        if (!to instanceof jQuery) {
-          to = $(to);
-        };
-        if (index === 0) {
-          $(this).prependTo(to)
+        decor = -(oldDecor * 40) - 4
+        if (dms[index].Value == 12) {
+          word = -4
         } else {
-          $(this).insertAfter(to.children().eq(index - 1));
+          word = -dms[index].Value * pokerWidth - ((dms[index].Value + 1) * 4) - 34
         }
+        html += '<div class="poker" style="width: 30px;height: 36px;background-image: url(./52-cards.png);background-repeat: no-repeat;background-position: ' + word + 'px ' + decor + 'px;"></div>'
+      }
+      html += "</div>"
+      $($(this).parent()).after(html)
+      // console.log($(this).attr('hash'));
+    })
+    const SUITSIZE = 4
+    const CARDRANK = 13
+    const dm = []
+    for (i = 0; i < SUITSIZE; i++) {
+      for (j = 0; j < CARDRANK; j++) {
+        dm[i * CARDRANK + j] = { Suit: 0, Value: 0 }
+        dm[i * CARDRANK + j].Suit = i
+        dm[i * CARDRANK + j].Value = j
+      }
+    }
+    const gameResult = (seed) => {
+      dms = JSON.parse(JSON.stringify(dm));
+      hash = seed
+      var k1 = 0
+      var k2 = 0
+      var k3 = 0
+      var k4 = 0
+      for (i = 0; i < hash.length; i++) {
+        k1 = (k1 + hash[i].charCodeAt()) % 99 % 52
+        k2 = (k2 + hash[i].charCodeAt()) % 75 % 52
+        k3 = (k3 + hash[i].charCodeAt()) % 36 % 52
+        k4 = (k4 + hash[i].charCodeAt()) % 18 % 52
+        // console.log(k1,k2,k3,k4)
+
+        v1 = dms[k3]
+        v2 = dms[k2]
+        dms[k2] = v1
+        dms[k3] = v2
+
+        v3 = dms[k4]
+        v4 = dms[k1]
+        dms[k1] = v3
+        dms[k4] = v4
+
+        v5 = dms[k2]
+        v6 = dms[k1]
+        dms[k1] = v5
+        dms[k2] = v6
+
+        v7 = dms[k3]
+        v8 = dms[k2]
+        dms[k2] = v7
+        dms[k3] = v8
+      }
+      return dms
+    };
+    $.fn.appendToWithIndex = function (to, index) {
+      if (!to instanceof jQuery) {
+        to = $(to);
       };
-      var hash_url = window.location.search
-      const query = new URLSearchParams(location.search);
-      const version = query.get('v');
-      if ((/hash=/).test(hash_url)) {
-        var hash = hash_url.match(/hash=[0-9a-zA-z]+/)[0].replace(/hash=/, '');
-        $('#game_hash_input').val(hash)
-        $('#game_verify_submit').click()
+      if (index === 0) {
+        $(this).prependTo(to)
+      } else {
+        $(this).insertAfter(to.children().eq(index - 1));
       }
-    </script>
-    <script>
-      // tell the embed parent frame the height of the content
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage(["resultsFrame", {
-          height: document.body.getBoundingClientRect().height,
-          slug: "nwu2ffkv"
-        }], "*")
-      }
-    </script>
+    };
+    var hash_url = window.location.search
+    const query = new URLSearchParams(location.search);
+    const version = query.get('v');
+    if ((/hash=/).test(hash_url)) {
+      var hash = hash_url.match(/hash=[0-9a-zA-z]+/)[0].replace(/hash=/, '');
+      $('#game_hash_input').val(hash)
+      $('#game_verify_submit').click()
+    }
+  </script>
+  <script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent) {
+      window.parent.parent.postMessage(["resultsFrame", {
+        height: document.body.getBoundingClientRect().height,
+        slug: "nwu2ffkv"
+      }], "*")
+    }
+  </script>
 </body>
 
 </html>
